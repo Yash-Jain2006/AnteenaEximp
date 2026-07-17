@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import { Mail, MapPin, MessageCircle, Phone, Timer, UserRound } from "lucide-react";
+import { Mail, MapPin, MessageCircle, Timer, UserRound } from "lucide-react";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { PageHero } from "@/components/ui/PageHero";
+import { pageMetadata } from "@/lib/seo";
 import { SITE, whatsappUrl } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: "Contact Anteena Eximp about agricultural product sourcing, specifications, documentation, and export requirements.",
-  alternates: { canonical: "/contact" },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Contact Agricultural Products Exporter India",
+  description:
+    "Contact Anteena Eximp for agricultural product sourcing, export specifications, documentation, and WhatsApp support. Send your inquiry today.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (
@@ -25,7 +27,7 @@ export default function ContactPage() {
             <p>For detailed pricing, use the quote form. For general sourcing and documentation questions, send a message here.</p>
             <ul>
               <li><Mail /><span><small>Business email</small><a href={`mailto:${SITE.businessEmail}`}>{SITE.businessEmail}</a></span></li>
-              <li><Mail /><span><small>Contact email</small><a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a></span></li>
+
               <li><MessageCircle /><span><small>WhatsApp</small><a href={whatsappUrl()} target="_blank" rel="noreferrer">{SITE.phone}</a></span></li>
               {SITE.contacts.map((contact) => (
                 <li key={contact.name}>
@@ -33,11 +35,11 @@ export default function ContactPage() {
                   <span>
                     <small>{contact.name}</small>
                     <a href={`tel:${contact.phone.replace(/\s/g, "")}`}>{contact.phone}</a>
-                    {contact.email ? <a href={`mailto:${contact.email}`}>{contact.email}</a> : null}
+
                   </span>
                 </li>
               ))}
-              <li><Phone /><span><small>Phone</small><a href={`tel:${SITE.phone.replace(/\s/g, "")}`}>{SITE.phone}</a></span></li>
+
               <li><MapPin /><span><small>Location</small>{SITE.location}</span></li>
               <li><Timer /><span><small>Response</small>Usually within one business day</span></li>
             </ul>

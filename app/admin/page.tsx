@@ -28,7 +28,7 @@ export default async function AdminDashboardPage() {
     if (!contactsResult.error && !quotesResult.error) {
       contacts = (contactsResult.data || []) as ContactInquiryRow[];
       quotes = (quotesResult.data || []) as QuoteRequestRow[];
-    } else if (admin.source !== "mock") {
+    } else {
       return (
         <AdminSetupNotice
           title="Dashboard data could not load"
@@ -36,7 +36,7 @@ export default async function AdminDashboardPage() {
         />
       );
     }
-  } else if (admin.source !== "mock") {
+  } else {
     return (
       <AdminSetupNotice
         title="Dashboard data needs Supabase service credentials"
@@ -45,64 +45,7 @@ export default async function AdminDashboardPage() {
     );
   }
 
-  if (admin.source === "mock" && contacts.length === 0 && quotes.length === 0) {
-    contacts = [
-      {
-        id: 1,
-        created_at: "2026-07-09T06:00:00.000Z",
-        name: "Suresh Patel",
-        subject: "Bulk Onion Powder sourcing inquiry",
-        email: "suresh.patel@agroglobal.in",
-        phone: "+91 98765 43210",
-        country: "India",
-        company: "AgroGlobal Exports",
-        message: "We need 50 tons of dehydrated pink onion powder. Please provide the specification sheet and FOB Mumbai pricing.",
-        status: "new",
-        source: "mock",
-        ip_hash: null,
-        user_agent: null,
-      },
-      {
-        id: 2,
-        created_at: "2026-07-09T02:00:00.000Z",
-        name: "Emma Watson",
-        subject: "Chia seeds certificate of analysis request",
-        email: "emma@purefoods.co.uk",
-        phone: "+44 20 7946 0958",
-        country: "United Kingdom",
-        company: "Pure Foods UK Ltd",
-        message: "Hello, we are interested in importing your organic chia seeds. Could you send over the latest COA and pest control report?",
-        status: "new",
-        source: "mock",
-        ip_hash: null,
-        user_agent: null,
-      },
-    ];
-    quotes = [
-      {
-        id: 1,
-        created_at: "2026-07-09T06:00:00.000Z",
-        product_name: "Premium Dehydrated Garlic Powder",
-        company: "Spice World LLC",
-        name: "David Miller",
-        product_category: "Dehydrated Powders",
-        quantity: "15",
-        unit: "Metric Tons",
-        country: "United States",
-        email: "dmiller@spiceworld.com",
-        phone: "+1 555-0199",
-        destination_port: "Port of New York",
-        notes: "Requires standard export corrugated box packaging. Grade A quality only.",
-        status: "new",
-        source: "mock",
-        ip_hash: null,
-        user_agent: null,
-        grade: null,
-        incoterm: null,
-        packaging: null,
-      },
-    ];
-  }
+
 
   return (
     <AdminShell title="Inquiry Dashboard" description="Review contact inquiries and quote requests from the website." adminEmail={admin.email}>
@@ -113,45 +56,24 @@ export default async function AdminDashboardPage() {
         <Stat icon={<Phone />} label="WhatsApp" value="+91 93027 14134" />
       </div>
 
-      <div className="admin-panels">
-        <InquiryPanel title="Latest contact inquiries" empty="No contact inquiries yet.">
-          {contacts.map((item) => (
-            <article key={item.id} className="admin-record">
-              <header>
-                <strong>{item.name}</strong>
-                <span>{formatDateTime(item.created_at)}</span>
-              </header>
-              <p>{item.subject}</p>
-              <small>
-                {item.email} • {item.phone} • {item.country}
-              </small>
-              {item.company ? <small>Company: {item.company}</small> : null}
-              <blockquote>{item.message}</blockquote>
-            </article>
-          ))}
-        </InquiryPanel>
+      <div className="admin-panels mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a href="/admin/inquiries" className="admin-panel hover:border-black transition-colors block border p-6 rounded-lg bg-white shadow-sm cursor-pointer">
+          <h2 className="text-xl font-bold mb-2">View Contact Inquiries &rarr;</h2>
+          <p className="text-gray-600 mb-4">Manage and respond to general messages and questions from website visitors.</p>
+          <div className="text-sm font-medium">
+            <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full mr-2">{contacts.filter(c => c.status === 'new').length} New</span>
+            <span className="text-gray-500">{contacts.length} Total</span>
+          </div>
+        </a>
 
-        <InquiryPanel title="Latest quote requests" empty="No quote requests yet.">
-          {quotes.map((item) => (
-            <article key={item.id} className="admin-record">
-              <header>
-                <strong>{item.product_name}</strong>
-                <span>{formatDateTime(item.created_at)}</span>
-              </header>
-              <p>
-                {item.company} — {item.name}
-              </p>
-              <small>
-                {item.product_category} • {item.quantity} {item.unit} • {item.country}
-              </small>
-              <small>
-                {item.email} • {item.phone}
-              </small>
-              {item.destination_port ? <small>Destination: {item.destination_port}</small> : null}
-              {item.notes ? <blockquote>{item.notes}</blockquote> : null}
-            </article>
-          ))}
-        </InquiryPanel>
+        <a href="/admin/quotes" className="admin-panel hover:border-black transition-colors block border p-6 rounded-lg bg-white shadow-sm cursor-pointer">
+          <h2 className="text-xl font-bold mb-2">View Quote Requests &rarr;</h2>
+          <p className="text-gray-600 mb-4">Manage detailed product inquiries, quantity requirements, and shipping specs.</p>
+          <div className="text-sm font-medium">
+            <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full mr-2">{quotes.filter(q => q.status === 'new').length} New</span>
+            <span className="text-gray-500">{quotes.length} Total</span>
+          </div>
+        </a>
       </div>
     </AdminShell>
   );
@@ -167,21 +89,3 @@ function Stat({ icon, label, value }: { icon: ReactNode; label: string; value: s
   );
 }
 
-function InquiryPanel({ title, empty, children }: { title: string; empty: string; children: ReactNode }) {
-  const hasRecords = Array.isArray(children) ? children.length > 0 : Boolean(children);
-
-  return (
-    <section className="admin-panel">
-      <h2>{title}</h2>
-      {hasRecords ? children : <p className="admin-empty">{empty}</p>}
-    </section>
-  );
-}
-
-function formatDateTime(value: string) {
-  return new Intl.DateTimeFormat("en-IN", {
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZone: "Asia/Kolkata",
-  }).format(new Date(value));
-}

@@ -8,3 +8,10 @@ npm-debug.log*
 .vercel/
 .playwright-cli/
 server-*.log
+
+# Agent & workspace temp files
+.agent/
+.agents/
+screenshots/
+skills-lock.json
+

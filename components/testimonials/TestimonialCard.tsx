@@ -17,7 +17,7 @@ export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
       <header>
         <div className="testimonial-card__avatar" aria-hidden="true">
           {testimonial.photoUrl ? (
-            <Image src={testimonial.photoUrl} alt="" fill sizes="56px" />
+            <Image src={testimonial.photoUrl} alt={`Photo of ${testimonial.customerName}`} fill sizes="56px" />
           ) : (
             <span>{initials(testimonial.customerName)}</span>
           )}

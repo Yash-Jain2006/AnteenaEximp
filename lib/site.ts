@@ -29,12 +29,14 @@ export const PRODUCT_CATEGORIES = [
   "Dehydrated Powders",
   "Seeds",
   "Spices",
+  "Uncategorized",
 ] as const;
 
 export const CATEGORY_IMAGES: Record<string, string> = {
   "Dehydrated Powders": "/images/categories/processed.webp",
   "Seeds": "/images/categories/oil-seeds.webp",
   "Spices": "/images/categories/spices.webp",
+  "Uncategorized": "/images/cta/commodities.webp",
 };
 
 export function categoryImage(category: string) {

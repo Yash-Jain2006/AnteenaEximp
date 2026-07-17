@@ -18,17 +18,6 @@ export function LoginForm() {
     setLoading(true);
 
     try {
-      // Direct mock admin bypass for default credentials
-      if (email.toLowerCase().trim() === "anteenaeximp@gmail.com" && password === "anteenaeximp") {
-        document.cookie = "sb-mock-admin=true; path=/; max-age=86400; SameSite=Lax";
-        router.push("/admin");
-        router.refresh();
-        return;
-      }
-
-      // Clear mock cookie if using real supabase auth
-      document.cookie = "sb-mock-admin=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-
       const supabase = createClient();
       const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
 

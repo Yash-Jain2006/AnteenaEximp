@@ -5,6 +5,22 @@ export type { Product } from "@/lib/cms/types";
 export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
 type FallbackSpecification = Omit<Product["specs"][number], "displayOrder"> & { displayOrder?: number };
 
+const PRODUCT_IMAGES: Record<string, string> = {
+  "onion-powder": "/images/products/onion-powder-export.webp",
+  "garlic-powder": "/images/products/garlic-powder-export.webp",
+  "chia-seeds": "/images/products/chia-seeds-export.webp",
+  "red-chilli-powder": "/images/products/red-chilli-powder-export.webp",
+  cumin: "/images/products/cumin-export.webp",
+  turmeric: "/images/products/turmeric-export.webp",
+  coriander: "/images/products/coriander-export.webp",
+  "black-pepper": "/images/products/black-pepper-export.webp",
+  asafoetida: "/images/products/asafoetida-export.webp",
+  cardamom: "/images/products/cardamom-export.webp",
+  "fennel-seeds": "/images/products/fennel-seeds-export.webp",
+  "fenugreek-seeds": "/images/products/fenugreek-seeds-export.webp",
+  "custom-requirement-products": "/images/products/custom-agricultural-products-export.webp",
+};
+
 const product = (
   id: string,
   slug: string,
@@ -19,35 +35,48 @@ const product = (
 ): Product => {
   const orderedSpecs = specs.map((spec, index) => ({ ...spec, displayOrder: spec.displayOrder ?? index + 1 }));
   const badges = grades.map((label, index) => ({ label, displayOrder: index + 1 }));
+  const image = PRODUCT_IMAGES[slug] ?? CATEGORY_IMAGES[category];
+  const galleryImages = [
+    {
+      url: `/images/products/gallery/${slug}-texture.webp`,
+      alt: `${name} ${category} close-up texture for export catalog`,
+      displayOrder: 1,
+    },
+    {
+      url: `/images/products/gallery/${slug}-export-packing.webp`,
+      alt: `${name} ${category} export packing visual`,
+      displayOrder: 2,
+    },
+  ];
 
   return {
-  id,
-  source: "fallback",
-  slug,
-  name,
-  title: name,
-  category,
-  image: CATEGORY_IMAGES[category],
-  mainImage: CATEGORY_IMAGES[category],
-  galleryImages: [],
-  origin,
-  grades,
-  badges,
-  packaging,
-  minimumOrder,
-  moq: minimumOrder,
-  hsCode: "Confirmed during quotation",
-  description,
-  shortDescription: description,
-  fullDescription: description,
-  specs: orderedSpecs,
-  specifications: orderedSpecs,
-  applications: [],
-  seoTitle: name,
-  seoDescription: description,
-  featured: ["001", "002", "003", "004"].includes(id),
-  status: "published",
-  displayOrder: Number(id),
+    id,
+    source: "fallback",
+    slug,
+    name,
+    title: name,
+    category,
+    image,
+    mainImage: image,
+    galleryImages,
+    origin,
+    grades,
+    badges,
+    packaging,
+    minimumOrder,
+    moq: minimumOrder,
+    hsCode: "Confirmed during quotation",
+    description,
+    shortDescription: description,
+    fullDescription: description,
+    specs: orderedSpecs,
+    specifications: orderedSpecs,
+    applications: [],
+    seoTitle: name,
+    seoDescription: description,
+    featured: ["001", "002", "003", "004"].includes(id),
+    status: "published",
+    displayOrder: Number(id),
   };
 };
 
@@ -236,7 +265,7 @@ export const products: Product[] = [
     "013",
     "custom-requirement-products",
     "As Per Requirement Products",
-    "Spices",
+    "Uncategorized",
     "India",
     ["Agricultural products", "Buyer-defined specification", "Custom sourcing"],
     "Buyer-defined packing",

@@ -111,7 +111,8 @@ export async function saveProductAction(id: string | null, _previousState: Admin
       await createCmsProduct(row, children);
     }
   } catch (error) {
-    return { error: error instanceof Error ? error.message : "Unable to save product." };
+    console.error("Failed to save product:", error);
+    return { error: "A database error occurred while saving the product." };
   }
 
   revalidateProductPaths(oldSlug, input.slug);
@@ -128,7 +129,8 @@ export async function deleteProductAction(formData: FormData) {
     slug = existing?.slug;
     await deleteCmsProduct(id);
   } catch (error) {
-    redirect(`/admin/products?error=${encodeURIComponent(error instanceof Error ? error.message : "Unable to delete product.")}`);
+    console.error("Failed to delete product:", error);
+    redirect(`/admin/products?error=${encodeURIComponent("A database error occurred while deleting the product.")}`);
   }
 
   revalidateProductPaths(slug);
@@ -146,7 +148,8 @@ export async function reorderProductAction(formData: FormData) {
     await updateProductDisplayOrder(id, displayOrder);
     revalidateProductPaths(existing?.slug);
   } catch (error) {
-    redirect(`/admin/products?error=${encodeURIComponent(error instanceof Error ? error.message : "Unable to reorder product.")}`);
+    console.error("Failed to reorder product:", error);
+    redirect(`/admin/products?error=${encodeURIComponent("A database error occurred while reordering the product.")}`);
   }
 
   redirect("/admin/products?ordered=1");

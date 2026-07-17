@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
+import { pageMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: "Privacy policy for Anteena Eximp website inquiries and quote requests.",
-  alternates: { canonical: "/privacy" },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Privacy Policy for Import Export Website",
+  description:
+    "Review how Anteena Eximp handles website inquiry and quote request information for agricultural export buyers. Contact us with privacy questions.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { ProductCatalog } from "@/components/products/ProductCatalog";
 import { getPublishedProducts } from "@/lib/cms/products";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Agricultural Products",
-  description: "Explore onion powder, garlic powder, chia seeds, Indian spices, and custom requirement agricultural exports from Anteena Eximp.",
-  alternates: { canonical: "/products" },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Agricultural Products Exporter India",
+  description:
+    "Browse onion powder, garlic powder, chia seeds, Indian spices, and custom agricultural export products from Anteena Eximp. Request a quote today.",
+  path: "/products",
+  image: "/images/cta/commodities.webp",
+});
 
 export default async function ProductsPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
   const { category } = await searchParams;

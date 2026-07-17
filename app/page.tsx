@@ -19,6 +19,7 @@ import { insights } from "@/lib/data/insights";
 import { PRODUCT_CATEGORIES, SITE, categoryImage, whatsappUrl } from "@/lib/site";
 import { formatDate } from "@/lib/utils";
 
+// force homepage hot-reload
 const services = [
   ["01", "Direct sourcing", Leaf],
   ["02", "Quality & specification", SearchCheck],
@@ -75,6 +76,7 @@ export default async function Home() {
             alt="Agricultural commodities arranged at an export warehouse"
             fill
             priority
+            fetchPriority="high"
             sizes="(max-width: 900px) 100vw, 50vw"
           />
         </div>
@@ -122,7 +124,7 @@ export default async function Home() {
                 <Reveal key={item.slug} className={`editorial-product editorial-product--${index + 1}`} delay={index * 0.08}>
                   <Link href={`/products/${item.slug}`}>
                     <div className="editorial-product__image">
-                      <Image src={item.mainImage || categoryImage(item.category)} alt={`${item.name} export category`} fill sizes="(max-width: 800px) 100vw, 40vw" />
+                      <Image src={item.mainImage || categoryImage(item.category)} alt={`${item.name} ${item.category} for export from India`} fill sizes="(max-width: 800px) 100vw, 40vw" />
                     </div>
                     <span>
                       {item.name}
@@ -241,7 +243,7 @@ export default async function Home() {
             {insights.map((item, index) => (
               <article key={item.slug} className={index === 0 ? "insight-feature" : "insight-compact"}>
                 <Link href={`/insights/${item.slug}`} className="insight-image">
-                  <Image src={item.image} alt="" fill sizes={index === 0 ? "60vw" : "30vw"} />
+                  <Image src={item.image} alt={item.title} fill sizes={index === 0 ? "60vw" : "30vw"} />
                 </Link>
                 <div>
                   <span>

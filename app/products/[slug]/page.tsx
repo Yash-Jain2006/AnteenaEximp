@@ -6,7 +6,9 @@ import { ArrowLeft, CheckCircle2, Download, MessageCircle } from "lucide-react";
 import { ProductCard } from "@/components/products/ProductCard";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { getProductBySlug, getPublishedProducts, getRelatedProducts } from "@/lib/cms/products";
+import { absoluteUrl, breadcrumbJsonLd, jsonLd, pageMetadata } from "@/lib/seo";
 import { SITE, whatsappUrl } from "@/lib/site";
+import type { Product } from "@/lib/cms/types";
 
 export async function generateStaticParams() {
   const products = await getPublishedProducts();
@@ -17,12 +19,26 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const product = await getProductBySlug((await params).slug);
   if (!product) return {};
 
-  return {
-    title: product.seoTitle || product.name,
-    description: product.seoDescription || product.description,
-    alternates: { canonical: `/products/${product.slug}` },
-    openGraph: { images: [product.image] },
-  };
+  return pageMetadata({
+    title: productSeoTitle(product),
+    description: productSeoDescription(product),
+    path: `/products/${product.slug}`,
+    image: product.image,
+  });
+}
+
+function productSeoTitle(product: Product) {
+  const compact = `${product.name} Exporter India`;
+  const full = `${product.name} Supplier and Exporter India`;
+  return full.length + " | Anteena Eximp".length > 60 ? compact : full;
+}
+
+function productSeoDescription(product: Product) {
+  if (product.category === "Uncategorized") {
+    return "Request custom agricultural export products from Anteena Eximp. Review packing, MOQ, HS code, and buyer specifications. Contact our trade desk today.";
+  }
+  const category = product.category.toLowerCase();
+  return `Request ${product.name} export details from Anteena Eximp. Review origin, packing, MOQ, HS code, and ${category} specifications. Contact our trade desk today.`;
 }
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -42,15 +58,37 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         { label: "HS code", value: product.hsCode, displayOrder: 5 },
         { label: "Payment and shipping", value: "Confirmed with quotation", displayOrder: 6 },
       ];
-  const schema = {
+  const productUrl = absoluteUrl(`/products/${product.slug}`);
+  const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
     description: product.description,
-    image: product.image.startsWith("http") ? product.image : `${SITE.url}${product.image}`,
+    image: absoluteUrl(product.image),
     category: product.category,
+    sku: product.slug,
+    url: productUrl,
     brand: { "@type": "Brand", name: SITE.name },
+    manufacturer: { "@type": "Organization", name: SITE.name, url: SITE.url },
+    identifier: [{ "@type": "PropertyValue", propertyID: "HS Code", value: product.hsCode }],
+    additionalProperty: [
+      { "@type": "PropertyValue", name: "HS code", value: product.hsCode },
+      { "@type": "PropertyValue", name: "Category", value: product.category },
+      { "@type": "PropertyValue", name: "Origin", value: product.origin },
+      { "@type": "PropertyValue", name: "Minimum order", value: product.minimumOrder },
+      { "@type": "PropertyValue", name: "Packaging", value: product.packaging },
+      ...specifications.slice(0, 6).map((specification) => ({
+        "@type": "PropertyValue",
+        name: specification.label,
+        value: specification.value,
+      })),
+    ],
   };
+  const breadcrumbSchema = breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Products", path: "/products" },
+    { name: product.name, path: `/products/${product.slug}` },
+  ]);
   const message = `Hello Anteena Eximp, I would like to inquire about ${product.name}.`;
   const quoteHref = `/get-a-quote?product=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category)}`;
 
@@ -63,7 +101,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           </Link>
           <div className="product-detail-hero__grid">
             <div className="product-detail-image">
-              <Image src={product.image} alt={`${product.name} product category`} fill priority sizes="(max-width: 900px) 100vw, 55vw" />
+              <Image src={product.image} alt={`${product.name} ${product.category} for export from India`} fill priority sizes="(max-width: 900px) 100vw, 55vw" />
             </div>
             <div className="product-detail-summary">
               <span>{product.category}</span>
@@ -131,7 +169,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             <div className="product-gallery-grid">
               {product.galleryImages.map((image) => (
                 <div className="product-gallery-image" key={`${image.url}-${image.displayOrder}`}>
-                  <Image src={image.url} alt={image.alt || product.name} fill sizes="(max-width: 800px) 100vw, 33vw" />
+                  <Image src={image.url} alt={image.alt || `${product.name} export product gallery image`} fill sizes="(max-width: 800px) 100vw, 33vw" />
                 </div>
               ))}
             </div>
@@ -152,7 +190,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         </section>
       ) : null}
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(productSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbSchema) }} />
     </>
   );
 }

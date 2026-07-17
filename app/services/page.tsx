@@ -3,8 +3,15 @@ import Image from "next/image";
 import { Box, FileCheck2, Leaf, MessageSquareText, SearchCheck, Ship } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { ButtonLink } from "@/components/ui/ButtonLink";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Export Services", description: "Sourcing, specification alignment, packing, documentation, and freight coordination for agricultural trade from India.", alternates: { canonical: "/services" } };
+export const metadata: Metadata = pageMetadata({
+  title: "Agricultural Export Services from India",
+  description:
+    "Plan sourcing, specification checks, packing, documentation, and freight coordination for Indian agricultural exports. Start your inquiry now.",
+  path: "/services",
+  image: "/images/about/sourcing-team.webp",
+});
 
 const services = [
   [Leaf, "Direct sourcing", "Product options are matched to your grade, season, volume, and destination requirements."],

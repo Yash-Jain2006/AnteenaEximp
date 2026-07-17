@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
+import { pageMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Terms of Use",
-  description: "Terms of use for Anteena Eximp website content, product information, and inquiries.",
-  alternates: { canonical: "/terms" },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Terms for Agricultural Export Inquiries",
+  description:
+    "Read the terms for Anteena Eximp website content, product information, quotations, and agricultural export inquiries before contacting us today.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (

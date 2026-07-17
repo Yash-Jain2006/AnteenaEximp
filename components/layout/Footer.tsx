@@ -8,6 +8,7 @@ export function Footer() {
     ["Instagram", process.env.NEXT_PUBLIC_INSTAGRAM_URL],
     ["Facebook", process.env.NEXT_PUBLIC_FACEBOOK_URL],
   ].filter((item): item is [string, string] => Boolean(item[1]));
+  const whatsappHref = whatsappUrl();
 
   return (
     <footer className="site-footer">
@@ -28,7 +29,7 @@ export function Footer() {
         </div>
         <div>
           <h3>Company</h3>
-          {NAV_ITEMS.slice(2).map((item) => (
+          {NAV_ITEMS.map((item) => (
             <Link key={item.href} href={item.href}>
               {item.label}
             </Link>
@@ -45,14 +46,14 @@ export function Footer() {
         <div>
           <h3>Trade Desk</h3>
           <Link href="/get-a-quote">Request a Quote</Link>
-          <a href={whatsappUrl()} target={whatsappUrl().startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+          <a href={whatsappHref} target={whatsappHref.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
             WhatsApp
           </a>
           <Link href="/admin/login">Admin Login</Link>
         </div>
       </div>
       <div className="container site-footer__bottom">
-        <span>© {new Date().getFullYear()} Anteena Eximp. All rights reserved.</span>
+        <span>&copy; {new Date().getFullYear()} Anteena Eximp. All rights reserved.</span>
         <span>
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>

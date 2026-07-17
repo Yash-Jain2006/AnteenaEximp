@@ -7,7 +7,7 @@ import type { Product } from "@/lib/cms/types";
 import { PRODUCT_CATEGORIES } from "@/lib/site";
 
 export function ProductCatalog({ products, initialCategory = "All" }: { products: Product[]; initialCategory?: string }) {
-  const categories = useMemo(() => Array.from(new Set([...PRODUCT_CATEGORIES, ...products.map((product) => product.category)])), [products]);
+  const categories = useMemo(() => Array.from(new Set([...PRODUCT_CATEGORIES, ...products.map((product) => product.category)])).filter(c => c && c !== "Uncategorized"), [products]);
   const [category, setCategory] = useState(initialCategory || "All");
   const [query, setQuery] = useState("");
   const activeCategory = category === "All" || categories.includes(category) ? category : "All";

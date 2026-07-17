@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, Check, LoaderCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Turnstile } from "@marsidev/react-turnstile";
 import { PRODUCT_CATEGORIES } from "@/lib/site";
 import { quoteSchema, type QuoteInput } from "@/lib/validations";
 
@@ -19,6 +20,7 @@ export function QuoteForm() {
   const search = useSearchParams();
   const [step, setStep] = useState(0);
   const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
   const {
     register,
     handleSubmit,
@@ -44,7 +46,7 @@ export function QuoteForm() {
     const response = await fetch("/api/quote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      body: JSON.stringify({ ...values, turnstileToken }),
     });
     const data = await response.json().catch(() => ({}));
 
@@ -114,6 +116,9 @@ export function QuoteForm() {
 
       <div className="honeypot" aria-hidden="true">
         <label>Website<input {...register("website")} tabIndex={-1} autoComplete="off" /></label>
+      </div>
+      <div style={{ marginBottom: "1rem" }}>
+        <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!} onSuccess={setTurnstileToken} />
       </div>
       {result ? <p className={result.ok ? "form-notice form-notice--success" : "form-notice form-notice--error"} role="status">{result.message}</p> : null}
       <div className="form-actions">

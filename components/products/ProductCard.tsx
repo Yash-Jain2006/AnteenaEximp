@@ -7,8 +7,8 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="product-card">
       <Link href={`/products/${product.slug}`} className="product-card__image" aria-label={`View ${product.name}`}>
-        <Image src={product.image} alt={`${product.category} arranged for export`} fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" />
-        <span>{product.category}</span>
+        <Image src={product.image} alt={`${product.name} ${product.category} for export from India`} fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" />
+        {product.category && product.category !== "Uncategorized" && <span>{product.category}</span>}
       </Link>
       <div className="product-card__body">
         <div className="product-card__origin"><MapPin size={14} /> {product.origin}</div>

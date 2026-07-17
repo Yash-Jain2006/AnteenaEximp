@@ -3,12 +3,15 @@ import { Suspense } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { QuoteForm } from "@/components/forms/QuoteForm";
 import { PageHero } from "@/components/ui/PageHero";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Request a Quote",
-  description: "Submit an agricultural product, quantity, packing, destination, and shipping requirement to Anteena Eximp.",
-  alternates: { canonical: "/get-a-quote" },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Bulk Agricultural Products Quote India",
+  description:
+    "Request a bulk quote for Indian agricultural products with quantity, packing, destination, and shipping details. Anteena Eximp will respond.",
+  path: "/get-a-quote",
+  image: "/images/cta/commodities.webp",
+});
 
 export default function QuotePage() {
   return (

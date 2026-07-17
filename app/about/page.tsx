@@ -3,8 +3,15 @@ import Image from "next/image";
 import { Eye, Handshake, Target } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { ButtonLink } from "@/components/ui/ButtonLink";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "About", description: "Learn how Anteena Eximp approaches agricultural sourcing and international trade from India.", alternates: { canonical: "/about" } };
+export const metadata: Metadata = pageMetadata({
+  title: "Agricultural Import Export Company India",
+  description:
+    "Learn how Anteena Eximp coordinates Indian agricultural sourcing, specifications, documentation, and shipment support. Contact our trade desk today.",
+  path: "/about",
+  image: "/images/about/quality-inspection.webp",
+});
 
 export default function AboutPage() {
   return <><PageHero current="About" title="Rooted in India. Built for clear, dependable trade." description="Anteena Eximp connects agricultural sourcing in India with the specifications, communication, and coordination international buyers expect." />

@@ -82,7 +82,8 @@ export async function saveTestimonialAction(id: string | null, _previousState: A
       await createCmsTestimonial(row);
     }
   } catch (error) {
-    return { error: error instanceof Error ? error.message : "Unable to save testimonial." };
+    console.error("Failed to save testimonial:", error);
+    return { error: "A database error occurred while saving the testimonial." };
   }
 
   revalidateTestimonials();
@@ -95,7 +96,8 @@ export async function deleteTestimonialAction(formData: FormData) {
   try {
     await deleteCmsTestimonial(parseId(formData.get("id")));
   } catch (error) {
-    redirect(`/admin/testimonials?error=${encodeURIComponent(error instanceof Error ? error.message : "Unable to delete testimonial.")}`);
+    console.error("Failed to delete testimonial:", error);
+    redirect(`/admin/testimonials?error=${encodeURIComponent("A database error occurred while deleting the testimonial.")}`);
   }
 
   revalidateTestimonials();
@@ -111,7 +113,8 @@ export async function reorderTestimonialAction(formData: FormData) {
     if (!Number.isInteger(displayOrder) || displayOrder < 0) throw new Error("Invalid display order.");
     await updateTestimonialDisplayOrder(id, displayOrder);
   } catch (error) {
-    redirect(`/admin/testimonials?error=${encodeURIComponent(error instanceof Error ? error.message : "Unable to reorder testimonial.")}`);
+    console.error("Failed to reorder testimonial:", error);
+    redirect(`/admin/testimonials?error=${encodeURIComponent("A database error occurred while reordering the testimonial.")}`);
   }
 
   revalidateTestimonials();
@@ -138,7 +141,8 @@ export async function toggleTestimonialVisibilityAction(formData: FormData) {
       featured: testimonial.featured,
     });
   } catch (error) {
-    redirect(`/admin/testimonials?error=${encodeURIComponent(error instanceof Error ? error.message : "Unable to update testimonial.")}`);
+    console.error("Failed to update testimonial:", error);
+    redirect(`/admin/testimonials?error=${encodeURIComponent("A database error occurred while updating the testimonial.")}`);
   }
 
   revalidateTestimonials();
