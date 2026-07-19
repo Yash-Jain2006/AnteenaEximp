@@ -15,3 +15,5 @@ server-*.log
 screenshots/
 skills-lock.json
 
+
+.vercel

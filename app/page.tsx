@@ -21,12 +21,12 @@ import { formatDate } from "@/lib/utils";
 
 // force homepage hot-reload
 const services = [
-  ["01", "Direct sourcing", Leaf],
-  ["02", "Quality & specification", SearchCheck],
-  ["03", "Packing & labelling", Box],
-  ["04", "Documentation", FileCheck2],
-  ["05", "Freight coordination", Ship],
-  ["06", "Responsive trade desk", MessageSquareText],
+  ["Direct sourcing", Leaf],
+  ["Quality & specification", SearchCheck],
+  ["Packing & labelling", Box],
+  ["Documentation", FileCheck2],
+  ["Freight coordination", Ship],
+  ["Responsive trade desk", MessageSquareText],
 ] as const;
 
 const steps = ["Share requirement", "Confirm specification", "Sampling & quotation", "Inspection & packing", "Documentation & dispatch"];
@@ -135,8 +135,7 @@ export default async function Home() {
               ))}
             </div>
             <div className="featured-spec">
-              <span>{featured[0].category}</span>
-              <h3>{featured[0].name}</h3>
+              <h3>{featured[0].category}: {featured[0].name}</h3>
               <p>{featured[0].description}</p>
               <dl>
                 <div>
@@ -171,9 +170,8 @@ export default async function Home() {
             <p>We align product selection, quality checks, packing, documentation, and freight planning around your buying requirements.</p>
           </Reveal>
           <div className="service-list">
-            {services.map(([number, title, Icon]) => (
+            {services.map(([title, Icon]) => (
               <div key={title}>
-                <span>{number}</span>
                 <Icon />
                 <strong>{title}</strong>
               </div>
@@ -194,7 +192,6 @@ export default async function Home() {
           <ol>
             {steps.map((step, index) => (
               <li key={step}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
                 <i />
                 <strong>{step}</strong>
               </li>
@@ -246,12 +243,12 @@ export default async function Home() {
                   <Image src={item.image} alt={item.title} fill sizes={index === 0 ? "60vw" : "30vw"} />
                 </Link>
                 <div>
-                  <span>
-                    {item.category} • {formatDate(item.date)}
-                  </span>
                   <h3>
                     <Link href={`/insights/${item.slug}`}>{item.title}</Link>
                   </h3>
+                  <div style={{ marginBottom: "14px", color: "var(--muted)", fontSize: "12px", fontWeight: "650" }}>
+                    {item.category} • {formatDate(item.date)}
+                  </div>
                   <p>{item.excerpt}</p>
                   <Link className="text-link" href={`/insights/${item.slug}`}>
                     Read guide <ArrowRight size={16} />

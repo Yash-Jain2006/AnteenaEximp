@@ -92,10 +92,17 @@ export async function verifyTurnstile(token: string | undefined | null, ip: stri
 }
 
 export function recipients() {
-  return (process.env.CONTACT_TO_EMAIL || `${SITE.businessEmail},${SITE.contactEmail}`)
+  const emails = (process.env.CONTACT_TO_EMAIL || `${SITE.businessEmail},${SITE.contactEmail}`)
     .split(",")
     .map((email) => email.trim())
-    .filter(Boolean);
+    .filter((email) => email && email !== "divyanshtotla18@gmail.com");
+
+  // Ensure info@anteenaeximp.com is always included in the notification recipient list
+  if (!emails.includes("info@anteenaeximp.com")) {
+    emails.push("info@anteenaeximp.com");
+  }
+
+  return emails;
 }
 
 export async function sendNotificationEmail({
