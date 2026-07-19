@@ -2,7 +2,7 @@ export const SITE = {
   name: "Anteena Eximp",
   legalName: "Anteena Eximp",
   domain: "anteenaeximp.com",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://anteenaeximp.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.anteenaeximp.com",
   email: "anteenaeximp@gmail.com",
   businessEmail: "anteenaeximp@gmail.com",
   contactEmail: "divyanshtotla18@gmail.com",
