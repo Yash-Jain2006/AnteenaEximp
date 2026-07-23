@@ -2,12 +2,8 @@
 
 ## Local run
 
-```powershell
-cd "C:\Users\yeash\OneDrive\Documents\New project"
 npm install
 npm run dev
-```
-
 Open `http://localhost:3000`.
 
 ## Required production environment variables
@@ -15,15 +11,15 @@ Open `http://localhost:3000`.
 Create `.env.local` locally and matching environment variables on your hosting platform:
 
 ```env
-NEXT_PUBLIC_SITE_URL=https://anteenaeximp.com
-NEXT_PUBLIC_WHATSAPP_NUMBER=919302714134
-CONTACT_TO_EMAIL=anteenaeximp@gmail.com,divyanshtotla18@gmail.com
-ADMIN_EMAILS=anteenaeximp@gmail.com,divyanshtotla18@gmail.com
-FORM_RATE_LIMIT_PER_MINUTE=10
-IP_HASH_SALT=replace-with-a-long-random-secret
+NEXT_PUBLIC_SITE_URL=
+NEXT_PUBLIC_WHATSAPP_NUMBER=
+CONTACT_TO_EMAIL=
+ADMIN_EMAILS=
+FORM_RATE_LIMIT_PER_MINUTE=
+IP_HASH_SALT=
 
 RESEND_API_KEY=
-RESEND_FROM_EMAIL=Anteena Eximp <noreply@anteenaeximp.com>
+RESEND_FROM_EMAIL=
 
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
@@ -48,6 +44,3 @@ Do not commit `.env.local`.
 2. Set `RESEND_API_KEY`.
 3. Use a verified sender in `RESEND_FROM_EMAIL`.
 
-## Domain and business email
-
-Point `anteenaeximp.com` to the deployed host using the hosting provider's DNS instructions. For business email, configure Google Workspace, Zoho Mail, or another mail provider and add the provider's MX/SPF/DKIM records in the domain DNS panel.
