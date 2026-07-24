@@ -53,7 +53,12 @@ export const getPublishedTestimonials = cache(async (): Promise<Testimonial[]> =
     .order("display_order", { ascending: true })
     .order("created_at", { ascending: true });
 
-  if (error || !data?.length) return fallbackTestimonials;
+  if (error) {
+    console.error("Error fetching testimonials from Supabase:", error);
+    return fallbackTestimonials;
+  }
+
+  if (!data) return [];
   return (data as unknown[]).map(mapTestimonialRow);
 });
 

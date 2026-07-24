@@ -141,7 +141,11 @@ async function fetchCmsProducts({ publishedOnly }: { publishedOnly: boolean }) {
   if (publishedOnly) query = query.eq("status", "published");
 
   const { data, error } = await query;
-  if (error || !data?.length) return null;
+  if (error) {
+    console.error("Error fetching products from Supabase:", error);
+    return null;
+  }
+  if (!data) return [];
   return (data as unknown[]).map(mapProductRow);
 }
 
